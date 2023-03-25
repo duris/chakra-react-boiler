@@ -14,28 +14,29 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { ReactInstance, SetStateAction, useState } from "react";
 import Header from "./Header";
+import { useNavigate } from "react-router";
 
-export default function SignUp() {
+export default function SignIn({
+  userEmail,
+  setUserEmail,
+}: {
+  userEmail: string;
+  setUserEmail: any;
+}) {
   const YupSchema = Yup.object({
-    name: Yup.string().required().min(3),
     email: Yup.string().email().required(),
     password: Yup.string().required().min(2),
   });
 
-  function signUp(values: Object) {
-    fetch("http://localhost:8080/signup", {
-      method: "post",
-    });
-  }
+  const navigate = useNavigate();
 
   return (
     <>
       <Container>
         <Heading fontSize={50} padding={12} textAlign="center">
-          Sign up
+          Sign in
         </Heading>
         <Flex
           bg="white"
@@ -48,33 +49,19 @@ export default function SignUp() {
           <Box bg="white" color="black" rounded="md" w="100%">
             <Formik
               initialValues={{
-                name: "",
                 email: "",
                 password: "",
                 rememberMe: false,
               }}
               validationSchema={YupSchema}
               onSubmit={(values) => {
-                //set email password object here
-                //useSubmit to check serverside if user exist already etc.
-                //Redirect to dashboard
-                alert(JSON.stringify(values, null, 2));
+                setUserEmail(values.email);
+                navigate("/dashboard");
               }}
             >
               {({ handleSubmit, errors, touched }) => (
                 <form onSubmit={handleSubmit}>
                   <VStack spacing={4} align="flex-start">
-                    <FormControl isInvalid={!!errors.name && touched.name}>
-                      <FormLabel htmlFor="name">Name</FormLabel>
-                      <Field
-                        as={Input}
-                        id="name"
-                        name="name"
-                        type="text"
-                        variant="filled"
-                      />
-                      <FormErrorMessage>{errors.name}</FormErrorMessage>
-                    </FormControl>
                     <FormControl isInvalid={!!errors.email && touched.email}>
                       <FormLabel htmlFor="email">Email Address</FormLabel>
                       <Field
@@ -99,7 +86,14 @@ export default function SignUp() {
                       />
                       <FormErrorMessage>{errors.password}</FormErrorMessage>
                     </FormControl>
-
+                    <Field
+                      as={Checkbox}
+                      id="rememberMe"
+                      name="rememberMe"
+                      colorScheme="purple"
+                    >
+                      Remember me?
+                    </Field>
                     <Button
                       bgGradient="linear(to-r, #7928CA, #FF0080)"
                       type="submit"
@@ -113,7 +107,6 @@ export default function SignUp() {
                 </form>
               )}
             </Formik>
-            <Link to="/signin">Sign In</Link>
           </Box>
         </Flex>
       </Container>

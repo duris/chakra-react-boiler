@@ -1,18 +1,19 @@
-import { Flex, Spacer, Heading, Center } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+export default function Footer() {
   return (
-    <header>
-      <Flex width="4xl">
-        <div>
-          <Heading>
-            <Link to="/">Hero</Link>
-          </Heading>
-        </div>
-        <Spacer />
-
-        <Center>
+    <Box
+      bg="purple.800"
+      color="white"
+      width="100%"
+      justifyContent="center"
+      display="flex"
+      p={10}
+      mt={20}
+    >
+      <Flex as="footer" width="4xl">
+        <Box maxWidth="4xl">
           <nav>
             <li>
               <Link to="/signin">Sign In</Link>
@@ -24,8 +25,8 @@ export default function Header() {
               <Link to="/dashboard">Dashbaord</Link>
             </li>
           </nav>
-        </Center>
+        </Box>
       </Flex>
-    </header>
+    </Box>
   );
 }
